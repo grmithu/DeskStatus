@@ -1,6 +1,6 @@
-# DeskLock
+# DeskStatus
 
-DeskLock is a Windows desktop utility for setting an away status and expected return time before locking your workstation. It runs in the system tray and applies the selected information to a generated Windows lock-screen image.
+DeskStatus is a Windows desktop utility for setting an away status and expected return time before locking your workstation. It runs in the system tray and applies the selected information to a generated Windows lock-screen image.
 
 ## Table of contents
 
@@ -21,9 +21,9 @@ DeskLock is a Windows desktop utility for setting an away status and expected re
 
 ## Overview
 
-DeskLock opens a compact status dialog from a global keyboard shortcut or the tray icon. Choose a predefined status or enter a custom message, select an expected return time, and apply it. DeskLock renders the message and return time into an image, sets the Windows lock-screen image through the Personalization CSP registry values, and locks the workstation.
+DeskStatus opens a compact status dialog from a global keyboard shortcut or the tray icon. Choose a predefined status or enter a custom message, select an expected return time, and apply it. DeskStatus renders the message and return time into an image, sets the Windows lock-screen image through the Personalization CSP registry values, and locks the workstation.
 
-DeskLock is a Windows-only WPF application targeting `net10.0-windows`. Its application manifest requests administrator privileges.
+DeskStatus is a Windows-only WPF application targeting `net10.0-windows`. Its application manifest requests administrator privileges.
 
 ## Features
 
@@ -33,7 +33,7 @@ DeskLock is a Windows-only WPF application targeting `net10.0-windows`. Its appl
 - A generated lock-screen image containing the chosen message and, when set, the return time.
 - A system-tray icon and menu for opening the status dialog, enabling or disabling startup, and exiting the app.
 - A global `Ctrl+Alt+L` shortcut to open the status dialog.
-- First-run setup of a Windows Task Scheduler logon task. If startup setup fails, DeskLock remains running and shows a notification.
+- First-run setup of a Windows Task Scheduler logon task. If startup setup fails, DeskStatus remains running and shows a notification.
 - Removal of the applied lock-screen registry values when the current session unlocks or logs on.
 - A theme-preview command that renders preview images without locking the workstation.
 
@@ -43,10 +43,10 @@ DeskLock is a Windows-only WPF application targeting `net10.0-windows`. Its appl
 | --- | --- |
 | `Ctrl+Alt+L` | Open the status dialog. |
 | `Enter` | Apply the selected status or custom message and lock the workstation. |
-| `Esc` | Close the dialog without locking; DeskLock remains in the tray. |
+| `Esc` | Close the dialog without locking; DeskStatus remains in the tray. |
 | Arrow keys | Move between and select items in the status or return-time option grids when a grid item is focused. |
 
-The global hotkey may be unavailable if another application has already registered it. In that case, DeskLock reports the issue in a tray notification; open the dialog from the tray icon instead.
+The global hotkey may be unavailable if another application has already registered it. In that case, DeskStatus reports the issue in a tray notification; open the dialog from the tray icon instead.
 
 ## Technology stack
 
@@ -65,7 +65,7 @@ The global hotkey may be unavailable if another application has already register
 - `Services/` contains the lock-screen image renderer and registry integration, workstation locking, hotkey, session, startup-task, and tray services.
 - `AppSettings.cs` defines the built-in statuses, themes, default status, and time options.
 
-When applying a status, DeskLock renders a PNG for the primary display, sets Windows' Personalization CSP lock-screen registry values, hides the dialog, and calls the Windows workstation-lock API. Lock-screen rendering and registry errors are written to the app's `errors.log`.
+When applying a status, DeskStatus renders a PNG for the primary display, sets Windows' Personalization CSP lock-screen registry values, hides the dialog, and calls the Windows workstation-lock API. Lock-screen rendering and registry errors are written to the app's `errors.log`.
 
 ## Status options
 
@@ -85,7 +85,7 @@ Selecting a status selects its default duration unless a return time has already
 ## Folder structure
 
 ```text
-DeskLock/
+DeskStatus/
 ├── Models/                 Status, time-option, and away-information models
 ├── Services/               Windows integration, rendering, tray, and startup services
 ├── ViewModels/             Main dialog view-model
@@ -94,8 +94,8 @@ DeskLock/
 ├── App.xaml.cs             Startup and application lifecycle
 ├── AppSettings.cs          Built-in status and time configuration
 ├── app.manifest            Requests administrator privileges
-├── DeskLock.csproj         Project, target framework, and package reference
-├── DeskLock.sln            Visual Studio solution
+├── DeskStatus.csproj         Project, target framework, and package reference
+├── DeskStatus.sln            Visual Studio solution
 └── THIRD-PARTY-NOTICES.txt Tabler Icons license notice
 ```
 
@@ -105,35 +105,35 @@ DeskLock/
 
 - Windows with support for .NET 10 desktop applications.
 - The .NET 10 SDK to restore, build, and run from source.
-- An administrator account and an elevated terminal to run DeskLock. The application manifest requests elevation, and the lock-screen integration writes to `HKEY_LOCAL_MACHINE`.
+- An administrator account and an elevated terminal to run DeskStatus. The application manifest requests elevation, and the lock-screen integration writes to `HKEY_LOCAL_MACHINE`.
 
 ## Install and set up
 
 Get the project source, then open **PowerShell as Administrator** and change to the project directory:
 
 ```powershell
-Set-Location E:\Projects\DeskLock
-dotnet restore .\DeskLock.sln
+Set-Location E:\Projects\DeskStatus
+dotnet restore .\DeskStatus.sln
 ```
 
-Run DeskLock elevated. On its first successful launch, it attempts to configure a Task Scheduler task to start the app at the current user's logon. Use **Start with Windows** in the tray menu to turn that task off or on later.
+Run DeskStatus elevated. On its first successful launch, it attempts to configure a Task Scheduler task to start the app at the current user's logon. Use **Start with Windows** in the tray menu to turn that task off or on later.
 
 ## Run
 
 From an elevated PowerShell window in the project directory:
 
 ```powershell
-dotnet run --project .\DeskLock.csproj
+dotnet run --project .\DeskStatus.csproj
 ```
 
-The dialog does not open automatically. Use `Ctrl+Alt+L` or click the tray icon. Selecting **Exit** in the tray menu closes DeskLock; closing or cancelling the dialog only hides it.
+The dialog does not open automatically. Use `Ctrl+Alt+L` or click the tray icon. Selecting **Exit** in the tray menu closes DeskStatus; closing or cancelling the dialog only hides it.
 
 ## Build
 
 Build the solution from an elevated PowerShell window:
 
 ```powershell
-dotnet build .\DeskLock.sln -c Release
+dotnet build .\DeskStatus.sln -c Release
 ```
 
 The project output is written beneath `bin\Release\net10.0-windows\`.
@@ -143,7 +143,7 @@ The project output is written beneath `bin\Release\net10.0-windows\`.
 Publish a single-file, framework-dependent executable for 64-bit Windows:
 
 ```powershell
-dotnet publish .\DeskLock.csproj -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true
+dotnet publish .\DeskStatus.csproj -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true
 ```
 
 The target computer must have the .NET 10 Desktop Runtime installed.
@@ -151,7 +151,7 @@ The target computer must have the .NET 10 Desktop Runtime installed.
 To publish a self-contained executable that includes the .NET runtime:
 
 ```powershell
-dotnet publish .\DeskLock.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+dotnet publish .\DeskStatus.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 ```
 
 The publish output is in `bin\Release\net10.0-windows\win-x64\publish\`. Run the published executable elevated; its manifest will request administrator approval.
@@ -161,27 +161,27 @@ The publish output is in `bin\Release\net10.0-windows\win-x64\publish\`. Run the
 Render PNG previews for the built-in statuses and custom-message theme without locking the workstation:
 
 ```powershell
-dotnet run --project .\DeskLock.csproj -- --render-themes
+dotnet run --project .\DeskStatus.csproj -- --render-themes
 ```
 
-Run this command elevated, as the application manifest still requests administrator privileges. The images are written to `%APPDATA%\DeskLock\previews\`.
+Run this command elevated, as the application manifest still requests administrator privileges. The images are written to `%APPDATA%\DeskStatus\previews\`.
 
 ## Runtime memory diagnostics
 
-Diagnostics are disabled by default. To opt in, start DeskLock with:
+Diagnostics are disabled by default. To opt in, start DeskStatus with:
 
 ```powershell
-dotnet run --project .\DeskLock.csproj -- --memory-diagnostics --memory-interval-seconds 5
+dotnet run --project .\DeskStatus.csproj -- --memory-diagnostics --memory-interval-seconds 5
 ```
 
-The interval is optional and accepts 1–3600 seconds; it defaults to 5 seconds. Each run writes a uniquely named CSV and state summary under `%APPDATA%\DeskLock\Diagnostics\`. Samples include process Working Set, managed heap size, GC collection counts and interval deltas, CPU percentage, and whether DeskLock received input during the preceding interval.
+The interval is optional and accepts 1–3600 seconds; it defaults to 5 seconds. Each run writes a uniquely named CSV and state summary under `%APPDATA%\DeskStatus\Diagnostics\`. Samples include process Working Set, managed heap size, GC collection counts and interval deltas, CPU percentage, and whether DeskStatus received input during the preceding interval.
 
 ## Data and configuration
 
 - `AppSettings.cs` contains the built-in status names, descriptions, themes, default durations, and default selected status. Changing these source values requires rebuilding the app.
-- The active lock-screen image is written to `%APPDATA%\DeskLock\lock.png`.
-- Theme previews are written to `%APPDATA%\DeskLock\previews\`.
-- Opt-in runtime diagnostic reports are written to `%APPDATA%\DeskLock\Diagnostics\`.
-- Lock-screen rendering and registry failures are recorded in `%APPDATA%\DeskLock\errors.log`.
-- DeskLock clears its configured lock-screen registry values on session unlock or logon and when the running app exits.
+- The active lock-screen image is written to `%APPDATA%\DeskStatus\lock.png`.
+- Theme previews are written to `%APPDATA%\DeskStatus\previews\`.
+- Opt-in runtime diagnostic reports are written to `%APPDATA%\DeskStatus\Diagnostics\`.
+- Lock-screen rendering and registry failures are recorded in `%APPDATA%\DeskStatus\errors.log`.
+- DeskStatus clears its configured lock-screen registry values on session unlock or logon and when the running app exits.
 - The outline icon geometries are derived from Tabler Icons; see `THIRD-PARTY-NOTICES.txt` for the license.
